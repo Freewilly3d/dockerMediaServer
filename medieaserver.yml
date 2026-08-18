@@ -1,0 +1,114 @@
+services:
+  sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd:latest
+    container_name: sabnzbd
+    network_mode: container:gluetun
+    environment:
+      - PUID=$PUID
+      - PGID=$PGID
+      - TZ=$TZ
+    volumes:
+      - /volume1/docker/sabnzbd/config:/config
+      - $PATHDOWN:/downloads
+    restart: unless-stopped
+#  transmission:
+#    image: lscr.io/linuxserver/transmission:latest
+#    container_name: transmission
+#    network_mode: container:gluetun
+#    environment:
+#      - PUID=$PUID
+#      - PGID=$PGID
+#      - TZ=$TZ
+#      - TRANSMISSION_WEB_HOME= #optional
+#      - USER= #optional
+#      - PASS= #optional
+#      - WHITELIST= #optional
+#      - PEERPORT= #optional
+#      - HOST_WHITELIST= #optional
+#    volumes:
+#      - /volume1/docker/transmission/config:/config
+#      - $PATHDOWN:/downloads
+#      - /volume1/docker/transmission/watch:/watch
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    network_mode: container:gluetun
+    volumes:
+      - /volume1/docker/qbittorrent:/config
+      - $PATHDOWN:/downloads
+    restart: always
+    environment:
+      - PUID=$PUID
+      - PGID=$PGID
+      - TZ=$TZ
+      - UMASK_SET=002
+      - WEBUI_PORT=32801
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    network_mode: container:gluetun
+    environment:
+      - PUID=$PUID
+      - PGID=$PGID
+      - TZ=Americal/Chicago
+    volumes:
+      - /volume1/docker/prowlarr:/config
+
+    restart: unless-stopped
+
+  sonarr:
+    image: my-custom-sonarr:latest
+    container_name: sonarr
+    network_mode: container:gluetun
+    environment:
+      - API_KEY=527695ef7c4d44a6affcee4b49f46aa7
+      - SONARR_URL=http://172.26.0.2:8989
+      - SERIES_thedailyshow=10
+      - PUID=$PUID
+      - PGID=$PGID
+      - TZ=$TZ
+    volumes:
+      - /volume1/docker/sonarr/config:/config
+      - /volume1/docker/emby/TV:/tv
+      - $PATHDOWN:/downloads
+    restart: unless-stopped
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    network_mode: container:gluetun
+
+    environment:
+      - PUID=$PUID
+      - PGID=$PGID
+      - TZ=$TZ
+    volumes:
+      - /volume1/docker/radarr/config:/config
+      - /volume1/docker/emby/Movies:/movies
+      - $PATHDOWN:/downloads
+    restart: unless-stopped
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    environment:
+      - PUID=$PUID
+      - PGID=$PGID
+      - TZ=Americal/Chicago
+    volumes:
+      - /volume1/docker/lidarr/config:/config
+      - /volume1/music/Alibrary:/music #optional
+      - $PATHDOWN:/downloads #optional
+    network_mode: container:gluetun
+    restart: unless-stopped
+  firefox:
+    image: lscr.io/linuxserver/firefox:latest
+    container_name: firefox
+    network_mode: container:gluetun
+
+    environment:
+      - PUID=1026
+      - PGID=100
+      - TZ=Etc/UTC
+    volumes:
+      - /volume1/docker/firefox:/config
+    shm_size: 1gb
+    restart: unless-stopped
