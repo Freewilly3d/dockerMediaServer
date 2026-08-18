@@ -8,7 +8,7 @@ services:
       - PGID=$PGID
       - TZ=$TZ
     volumes:
-      - /volume1/docker/sabnzbd/config:/config
+      - $DOCKERDIR/sabnzbd/config:/config
       - $PATHDOWN:/downloads
     restart: unless-stopped
 #  transmission:
@@ -26,15 +26,15 @@ services:
 #      - PEERPORT= #optional
 #      - HOST_WHITELIST= #optional
 #    volumes:
-#      - /volume1/docker/transmission/config:/config
+#      - $DOCKERDIR/transmission/config:/config
 #      - $PATHDOWN:/downloads
-#      - /volume1/docker/transmission/watch:/watch
+#      - $DOCKERDIR/transmission/watch:/watch
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
     network_mode: container:gluetun
     volumes:
-      - /volume1/docker/qbittorrent:/config
+      - $DOCKERDIR/qbittorrent:/config
       - $PATHDOWN:/downloads
     restart: always
     environment:
@@ -52,7 +52,7 @@ services:
       - PGID=$PGID
       - TZ=Americal/Chicago
     volumes:
-      - /volume1/docker/prowlarr:/config
+      - $DOCKERDIR/prowlarr:/config
 
     restart: unless-stopped
 
@@ -68,8 +68,8 @@ services:
       - PGID=$PGID
       - TZ=$TZ
     volumes:
-      - /volume1/docker/sonarr/config:/config
-      - /volume1/docker/emby/TV:/tv
+      - $DOCKERDIR/sonarr/config:/config
+      - $DOCKERDIR/emby/TV:/tv
       - $PATHDOWN:/downloads
     restart: unless-stopped
   radarr:
@@ -82,8 +82,8 @@ services:
       - PGID=$PGID
       - TZ=$TZ
     volumes:
-      - /volume1/docker/radarr/config:/config
-      - /volume1/docker/emby/Movies:/movies
+      - $DOCKERDIR/radarr/config:/config
+      - $DOCKERDIR/emby/Movies:/movies
       - $PATHDOWN:/downloads
     restart: unless-stopped
   lidarr:
@@ -94,7 +94,7 @@ services:
       - PGID=$PGID
       - TZ=Americal/Chicago
     volumes:
-      - /volume1/docker/lidarr/config:/config
+      - $DOCKERDIR/lidarr/config:/config
       - /volume1/music/Alibrary:/music #optional
       - $PATHDOWN:/downloads #optional
     network_mode: container:gluetun
@@ -109,6 +109,6 @@ services:
       - PGID=100
       - TZ=Etc/UTC
     volumes:
-      - /volume1/docker/firefox:/config
+      - $DOCKERDIR/firefox:/config
     shm_size: 1gb
     restart: unless-stopped
